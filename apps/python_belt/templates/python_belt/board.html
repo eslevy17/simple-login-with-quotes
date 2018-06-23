@@ -1,0 +1,86 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <style>
+    .columnblock {
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px;
+    }
+    .quotediv {
+        border: 2px solid lightgrey;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .navbar {
+        margin: 10px 0px 20px 0px;
+        background-color: lightblue;
+        border-radius: 10px;
+    }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row navbar">
+            <div class="col-sm-4">
+                <h2>Welcome, {{current_user.first_name}}!</h2>
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-5" style="text-align:right;">
+                <a href="/board"><button class="btn btn-info">Home</button></a>
+                <a href="/edit"><button class="btn btn-info">Edit my account</button></a>
+                <a href="/logout"><button class="btn btn-info">Logout</button></a>
+            </div>
+        </div>
+
+        <div class="columnblock">
+            {% for message in messages %}
+                {% if 'warning' in message.tags %}
+                    <p style="color:red">{{ message }}</p>
+                {% endif %}
+                {% if 'info' in message.tags %}
+                    <p style="color:green">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+
+            {% for quote in quotes %}
+                <div class="quotediv">
+                    <p><b>{{quote.author}}</b> said:</p>
+                    <p><i>"{{quote.content}}"</i></p>
+                    <p>posted by <a href="/user/{{quote.poster.id}}">{{quote.poster.first_name}}</a></p>
+                    <p>{{quote.likes.count }} like(s)</p>
+                    <a href="/like_quote/{{quote.id}}"><button class="btn btn-info">Like!</button></a>
+                    {% if quote.poster.id == current_user.id %}
+                        <a href="delete_quote/{{quote.id}}"><button class="btn btn-danger">Delete</button></a>
+                    {% endif %}
+                    <br />
+                    <br />
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="columnblock">
+            <h3>Add a quote!</h3>
+            {% for message in messages %}
+                {% if 'error' in message.tags %}
+                    <p style="color:red">{{ message }}</p>
+                {% endif %}
+                {% if 'success' in message.tags %}
+                    <p style="color:green">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+            <form action="/add_quote" method="post">
+                {% csrf_token %}
+                <label for="author">Author:</label><input class="form-control" type="text" name="author" /><br />
+                <label for="quote">Quote:</label><textarea class="form-control" name="content"></textarea><br />
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

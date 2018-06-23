@@ -1,0 +1,53 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <style>
+    .navbar {
+        margin: 10px 0px 20px 0px;
+        background-color: lightblue;
+        border-radius: 10px;
+    }
+    .quotediv {
+        border: 2px solid lightgrey;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row navbar">
+            <div class="col-sm-4">
+                <h2>Welcome, {{current_user.first_name}}!</h2>
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-5" style="text-align:right;">
+                <a href="/board"><button class="btn btn-info">Home</button></a>
+                <a href="/edit"><button class="btn btn-info">Edit my account</button></a>
+                <a href="/logout"><button class="btn btn-info">Logout</button></a>
+            </div>
+        </div>
+
+
+
+        <div class="col-sm-6">
+        <h4>{{user_name}} posted:</h4>
+        <br />
+        {% for quote in quotes %}
+        <div class="quotediv">
+            <p><b>{{quote.author}}</b> said:</p>
+            <p><i>"{{quote.content}}"</i></p>
+            <br />
+        </div>
+        {% endfor %}
+        </div>
+
+    </div>
+</body>
+
+
+</html>
